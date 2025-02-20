@@ -15,7 +15,7 @@ jobs:
             - v1-maven-cache-{{ checksum "pom.xml" }}
       - run:
           name: Verify with Maven
-          command: mvn verify
+          command: mvn -s .circleci/mvn-settings.xml verify
       - store_test_results:
           path: target/surefire-reports
       - save_cache:
@@ -32,7 +32,7 @@ jobs:
             - v1-maven-cache-{{ checksum "pom.xml" }}
       - run:
           name: Deploy with Maven
-          command: mvn deploy
+          command: mvn -s .circleci/mvn-settings.xml deploy
       - store_test_results:
           path: target/surefire-reports
       - save_cache:
