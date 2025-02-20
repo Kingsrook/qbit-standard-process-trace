@@ -22,48 +22,22 @@
 package com.kingsrook.qbits.standardprocesstrace.model;
 
 
-import com.kingsrook.qqq.backend.core.processes.tracing.ProcessTracerMessage;
+import com.kingsrook.qqq.backend.core.processes.tracing.ProcessTracerKeyRecordMessage;
 
 
 /*******************************************************************************
  **
  *******************************************************************************/
-public class ProcessTraceKeyRecordMessage extends ProcessTracerMessage
+@Deprecated(since = "Moved to ProcessTracerKeyRecordMessage in qqq-backend-core")
+public class ProcessTraceKeyRecordMessage extends ProcessTracerKeyRecordMessage
 {
-   private final String  tableName;
-   private final Integer recordId;
-
-
 
    /***************************************************************************
     **
     ***************************************************************************/
    public ProcessTraceKeyRecordMessage(String tableName, Integer recordId)
    {
-      super("Process Key Record is " + tableName + " " + recordId);
-      this.tableName = tableName;
-      this.recordId = recordId;
+      super(tableName, recordId);
    }
 
-
-
-   /*******************************************************************************
-    ** Getter for tableName
-    **
-    *******************************************************************************/
-   public String getTableName()
-   {
-      return (tableName);
-   }
-
-
-
-   /*******************************************************************************
-    ** Getter for id
-    **
-    *******************************************************************************/
-   public Integer getRecordId()
-   {
-      return (recordId);
-   }
 }
