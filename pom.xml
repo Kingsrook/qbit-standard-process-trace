@@ -30,7 +30,8 @@
    <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-      <maven.compiler.release>17</maven.compiler.release>
+      <maven.compiler.source>17</maven.compiler.source>
+      <maven.compiler.target>17</maven.compiler.target>
    </properties>
 
    <dependencyManagement>
@@ -38,7 +39,7 @@
          <dependency>
             <groupId>com.kingsrook.qqq</groupId>
             <artifactId>qqq-bom-pom</artifactId>
-            <version>0.24.0-integration-sprint-59-20250210-161628</version>
+            <version>0.24.0-integration-sprint-61-20250220-153703</version>
             <type>pom</type>
             <scope>import</scope>
          </dependency>
