@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import com.kingsrook.qbits.standardprocesstrace.StandardProcessTraceQBitConfig;
 import com.kingsrook.qbits.standardprocesstrace.model.ProcessTrace;
-import com.kingsrook.qbits.standardprocesstrace.model.ProcessTraceKeyRecordMessage;
 import com.kingsrook.qbits.standardprocesstrace.model.ProcessTraceSummaryLine;
 import com.kingsrook.qbits.standardprocesstrace.model.ProcessTraceSummaryLineRecordInt;
 import com.kingsrook.qqq.backend.core.actions.tables.GetAction;
@@ -55,6 +54,7 @@ import com.kingsrook.qqq.backend.core.model.session.QUser;
 import com.kingsrook.qqq.backend.core.model.tables.QQQTableTableManager;
 import com.kingsrook.qqq.backend.core.processes.implementations.etl.streamedwithfrontend.StreamedETLWithFrontendProcess;
 import com.kingsrook.qqq.backend.core.processes.tracing.ProcessTracerInterface;
+import com.kingsrook.qqq.backend.core.processes.tracing.ProcessTracerKeyRecordMessage;
 import com.kingsrook.qqq.backend.core.processes.tracing.ProcessTracerMessage;
 import com.kingsrook.qqq.backend.core.utils.CollectionUtils;
 import com.kingsrook.qqq.backend.core.utils.StringUtils;
@@ -170,7 +170,7 @@ public class StandardProcessTracer implements ProcessTracerInterface
    {
       try
       {
-         if(message instanceof ProcessTraceKeyRecordMessage keyRecordMessage)
+         if(message instanceof ProcessTracerKeyRecordMessage keyRecordMessage)
          {
             Integer keyTableId = QQQTableTableManager.getQQQTableId(QContext.getQInstance(), keyRecordMessage.getTableName());
 
@@ -297,12 +297,21 @@ public class StandardProcessTracer implements ProcessTracerInterface
 
                         for(Serializable primaryKey : processSummaryLine.getPrimaryKeys())
                         {
-                           Integer recordId = ValueUtils.getValueAsInteger(primaryKey);
-                           if(recordId != null)
+                           try
                            {
-                              recordIntList.add(new ProcessTraceSummaryLineRecordInt()
-                                 .withQqqTableId(qqqTableId)
-                                 .withRecordId(recordId));
+                              Integer recordId = ValueUtils.getValueAsInteger(primaryKey);
+                              if(recordId != null)
+                              {
+                                 recordIntList.add(new ProcessTraceSummaryLineRecordInt()
+                                    .withQqqTableId(qqqTableId)
+                                    .withRecordId(recordId));
+                              }
+                           }
+                           catch(Exception e)
+                           {
+                              /////////////////////////////////////////////////////////////////////
+                              // todo log (would be loud)?  or, let not be integer maybe better? //
+                              /////////////////////////////////////////////////////////////////////
                            }
                         }
                      }
