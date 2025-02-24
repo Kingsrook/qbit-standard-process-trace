@@ -66,6 +66,7 @@ public class StandardProcessTraceQBitProducer implements MetaDataProducerInterfa
    public MetaDataProducerMultiOutput produce(QInstance qInstance) throws QException
    {
       MetaDataProducerHelper.processAllMetaDataProducersInPackage(qInstance, ProcessTrace.class.getPackageName(), tableMetaDataCustomizer);
+      MetaDataProducerHelper.processAllMetaDataProducersInPackage(qInstance, getClass().getPackageName() + ".metadata", tableMetaDataCustomizer);
 
       //////////////////////////////////////////////////////////////////////////////////////
       // set the possible value source on the processTrace.userId field, if so configured //

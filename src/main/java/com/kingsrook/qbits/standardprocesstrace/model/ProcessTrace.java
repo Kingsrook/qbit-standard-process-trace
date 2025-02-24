@@ -24,12 +24,19 @@ package com.kingsrook.qbits.standardprocesstrace.model;
 
 import java.time.Instant;
 import java.util.List;
+import com.kingsrook.qbits.standardprocesstrace.metadata.ProcessTraceJoinKeyRecordQQQTableMetaDataProducer;
+import com.kingsrook.qbits.standardprocesstrace.metadata.ProcessTraceJoinQQQProcessMetaDataProducer;
+import com.kingsrook.qbits.standardprocesstrace.utils.ProcessTraceTableCustomizer;
+import com.kingsrook.qqq.backend.core.actions.customizers.TableCustomizers;
 import com.kingsrook.qqq.backend.core.exceptions.QException;
 import com.kingsrook.qqq.backend.core.model.data.QField;
 import com.kingsrook.qqq.backend.core.model.data.QRecord;
 import com.kingsrook.qqq.backend.core.model.data.QRecordEntity;
 import com.kingsrook.qqq.backend.core.model.metadata.QInstance;
+import com.kingsrook.qqq.backend.core.model.metadata.code.QCodeReference;
+import com.kingsrook.qqq.backend.core.model.metadata.fields.AdornmentType;
 import com.kingsrook.qqq.backend.core.model.metadata.fields.DisplayFormat;
+import com.kingsrook.qqq.backend.core.model.metadata.fields.FieldAdornment;
 import com.kingsrook.qqq.backend.core.model.metadata.fields.ValueTooLongBehavior;
 import com.kingsrook.qqq.backend.core.model.metadata.joins.QJoinMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.layout.QIcon;
@@ -90,7 +97,12 @@ public class ProcessTrace extends QRecordEntity
             .withSection(new QFieldSection("identity", new QIcon().withName("badge"), Tier.T1, List.of("id", "qqqProcessId", "processUUID", "userId")))
             .withSection(new QFieldSection("data", new QIcon().withName("text_snippet"), Tier.T2, List.of("startTimestamp", "endTimestamp", "runtimeMillis", "keyRecordQqqTableId", "keyRecordId", "recordCount", "exceptionMessage")))
             .withSection(new QFieldSection("summaryLines", new QIcon().withName("horizontal_rule"), Tier.T2).withWidgetName(childJoinName))
-            .withExposedJoin(new ExposedJoin().withLabel("Summary Lines").withJoinPath(List.of(childJoinName)).withJoinTable(ProcessTraceSummaryLine.TABLE_NAME));
+            .withExposedJoin(new ExposedJoin().withLabel("Summary Lines").withJoinPath(List.of(childJoinName)).withJoinTable(ProcessTraceSummaryLine.TABLE_NAME))
+            .withExposedJoin(new ExposedJoin().withLabel("Key Record Table").withJoinPath(List.of(ProcessTraceJoinKeyRecordQQQTableMetaDataProducer.NAME)).withJoinTable(QQQTable.TABLE_NAME))
+            .withExposedJoin(new ExposedJoin().withLabel("Process").withJoinPath(List.of(ProcessTraceJoinQQQProcessMetaDataProducer.NAME)).withJoinTable(QQQProcess.TABLE_NAME));
+
+         table.withCustomizer(TableCustomizers.POST_QUERY_RECORD, new QCodeReference(ProcessTraceTableCustomizer.class));
+         table.getField("keyRecordId").withFieldAdornment(new FieldAdornment(AdornmentType.LINK).withValue(AdornmentType.LinkValues.TO_RECORD_FROM_TABLE_DYNAMIC, true));
 
          return (table);
       }
