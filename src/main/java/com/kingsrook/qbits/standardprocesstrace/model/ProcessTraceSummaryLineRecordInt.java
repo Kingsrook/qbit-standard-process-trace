@@ -24,11 +24,16 @@ package com.kingsrook.qbits.standardprocesstrace.model;
 
 
 import java.util.List;
+import com.kingsrook.qbits.standardprocesstrace.utils.ProcessTraceSummaryLineRecordIntTableCustomizer;
+import com.kingsrook.qqq.backend.core.actions.customizers.TableCustomizers;
 import com.kingsrook.qqq.backend.core.exceptions.QException;
 import com.kingsrook.qqq.backend.core.model.data.QField;
 import com.kingsrook.qqq.backend.core.model.data.QRecord;
 import com.kingsrook.qqq.backend.core.model.data.QRecordEntity;
 import com.kingsrook.qqq.backend.core.model.metadata.QInstance;
+import com.kingsrook.qqq.backend.core.model.metadata.code.QCodeReference;
+import com.kingsrook.qqq.backend.core.model.metadata.fields.AdornmentType;
+import com.kingsrook.qqq.backend.core.model.metadata.fields.FieldAdornment;
 import com.kingsrook.qqq.backend.core.model.metadata.joins.QJoinMetaData;
 import com.kingsrook.qqq.backend.core.model.metadata.layout.QIcon;
 import com.kingsrook.qqq.backend.core.model.metadata.producers.MetaDataCustomizerInterface;
@@ -77,6 +82,9 @@ public class ProcessTraceSummaryLineRecordInt extends QRecordEntity
             .withSection(new QFieldSection("data", new QIcon().withName("text_snippet"), Tier.T2, List.of("qqqTableId", "recordId")))
             .withExposedJoin(new ExposedJoin().withLabel("Summary Line").withJoinPath(List.of(parentJoinName)).withJoinTable(ProcessTraceSummaryLine.TABLE_NAME))
             .withExposedJoin(new ExposedJoin().withLabel("Process Trace").withJoinPath(List.of(parentJoinName, grandparentJoinName)).withJoinTable(ProcessTrace.TABLE_NAME));
+
+         table.withCustomizer(TableCustomizers.POST_QUERY_RECORD, new QCodeReference(ProcessTraceSummaryLineRecordIntTableCustomizer.class));
+         table.getField("recordId").withFieldAdornment(new FieldAdornment(AdornmentType.LINK).withValue(AdornmentType.LinkValues.TO_RECORD_FROM_TABLE_DYNAMIC, true));
 
          return (table);
       }
