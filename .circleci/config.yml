@@ -1,111 +1,57 @@
-#version: 2.1
-#
-#commands:
-#
-#  mvn_jar_deploy:
-#    steps:
-#      - checkout
-#      - run:
-#          name: Adjust pom version
-#          command: |
-#            .circleci/adjust-pom-version.sh
-#      - restore_cache:
-#          keys:
-#            - v1-dependencies-{{ checksum "pom.xml" }}
-#      - run:
-#          name: Run Maven Jar Deploy
-#          command: |
-#            mvn -s .circleci/mvn-settings.xml -T4 flatten:flatten jar:jar deploy:deploy
-#      - save_cache:
-#          paths:
-#            - ~/.m2
-#          key: v1-dependencies-{{ checksum "pom.xml" }}
-#
-#jobs:
-#  mvn_test:
-#    executor: cimg/openjdk:17.0.14
-#    steps:
-#      - mvn_verify
-#
-#  mvn_deploy:
-#    executor: cimg/openjdk:17.0.14
-#    steps:
-#      - mvn_jar_deploy
-#
-#workflows:
-#  test_only:
-#    jobs:
-#      - mvn_test:
-#          context: qqq-maven-registry-credentials
-#          filters:
-#            branches:
-#              ignore: /(dev|integration.*)/
-#            tags:
-#              ignore: /(version|snapshot)-.*/
-#
-#  deploy:
-#    jobs:
-#      - mvn_deploy:
-#          context: qqq-maven-registry-credentials
-#          filters:
-#            branches:
-#              only: /(dev|integration.*)/
-#            tags:
-#              only: /(version|snapshot)-.*/
-
 version: 2.1
 
-executors:
-  java-executor:
-    docker:
-      - image: circleci/openjdk:17-jdk
-
-jobs:
-  verify:
-    executor: java-executor
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-maven-cache-{{ checksum "pom.xml" }}
-      - run:
-          name: Verify with Maven
-          command: mvn verify
-      - store_test_results:
-          path: target/surefire-reports
-      - save_cache:
-          paths:
-            - ~/.m2/repository
-          key: v1-maven-cache-{{ checksum "pom.xml" }}
-
-  deploy:
-    executor: java-executor
-    steps:
-      - checkout
-      - restore_cache:
-          keys:
-            - v1-maven-cache-{{ checksum "pom.xml" }}
-      - run:
-          name: Deploy with Maven
-          command: mvn deploy
-      - store_test_results:
-          path: target/surefire-reports
-      - save_cache:
-          paths:
-            - ~/.m2/repository
-          key: v1-maven-cache-{{ checksum "pom.xml" }}
+orbs:
+  qqq-orb: kingsrook/qqq-orb@0.3.6
 
 workflows:
-  version: 2
-  build_and_deploy:
+
+  test_only:
     jobs:
-      - verify:
-          context: qqq-maven-registry-credentials
+      - qqq-orb/mvn_test_only:
+          context: [ qqq-maven-registry-credentials ]
           filters:
             branches:
-              ignore: main
-      - deploy:
-          context: qqq-maven-registry-credentials
+              ignore: /(develop|main|release/.*|hotfix/.*|integration.*)/
+            tags:
+              only: []  
+
+  publish_snapshot:
+    jobs:
+      - qqq-orb/mvn_publish:
+          context: [ qqq-maven-registry-credentials ]
+          branch_type: snapshot
           filters:
             branches:
-              only: main
+              only:
+                - develop
+
+  publish_release_candidate:
+    jobs:
+      - qqq-orb/mvn_publish:
+          context: [ qqq-maven-registry-credentials ]
+          branch_type: release_candidate
+          filters:
+            branches:
+              only:
+                - /release\/.*/
+
+  publish_release:
+    jobs:
+      - qqq-orb/mvn_publish:
+          context: [ qqq-maven-registry-credentials ]
+          branch_type: release
+          filters:
+            branches:
+              only: [ main ]
+            tags:
+              only: [ /v.*/ ]
+
+  publish_hotfix_release:
+    jobs:
+      - qqq-orb/mvn_publish:
+          context: [ qqq-maven-registry-credentials ]
+          branch_type: hotfix
+          filters:
+            branches:
+              only:
+                - /hotfix\/.*/
