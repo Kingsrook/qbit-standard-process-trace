@@ -1,4 +1,8 @@
-## QBit:  Standard Process Trace
+# QBit: Standard Process Trace
+
+[![Version](https://img.shields.io/badge/version-0.1.1--SNAPSHOT-blue.svg)](https://github.com/Kingsrook/qbit-standard-process-trace)
+[![License](https://img.shields.io/badge/license-GNU%20Affero%20GPL%20v3-green.svg)](https://www.gnu.org/licenses/agpl-3.0.en.html)
+[![Java](https://img.shields.io/badge/java-17+-blue.svg)](https://adoptium.net/)
 
 ### Overview
 *Note:  This is one of the original QBit implementations - so, some of the mechanics of how
@@ -115,4 +119,86 @@ the provided tables.
   and, `processTraceSummaryLineRecordInt` has a `qqqTableId`.  This means that you'll want and
   need these tables in your QQQ Instance and backend data store.  
   * Use `QQQProcessesMetaDataProvider` and `QQQTablesMetaDataProvider` to define these tables.
+
+## 📚 Documentation
+
+**📖 [Complete Documentation Wiki](https://github.com/Kingsrook/qqq/wiki)** - Start here for comprehensive guides
+
+- **[🏠 Home](https://github.com/Kingsrook/qqq/wiki/Home)** - Project overview and quick start
+- **[🏗️ Architecture](https://github.com/Kingsrook/qqq/wiki/High-Level-Architecture)** - System design and principles
+- **[🔧 Development](https://github.com/Kingsrook/qqq/wiki/Developer-Onboarding)** - Setup and contribution guide
+- **[📦 QBits](https://github.com/Kingsrook/qqq/wiki/QBit-Development)** - QBit development guide
+- **[🚀 Building](https://github.com/Kingsrook/qqq/wiki/Building-Locally)** - Local development workflow
+
+## 🤝 Contributing
+
+**Important**: This repository is a component of the QQQ framework. All contributions, issues, and discussions should go through the main QQQ repository.
+
+### Development Workflow
+
+1. **Fork the main QQQ repository**: https://github.com/Kingsrook/qqq
+2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
+3. **Make your changes** (including QBit changes if applicable)
+4. **Run tests**: `mvn test`
+5. **Commit your changes**: `git commit -m 'Add amazing feature'`
+6. **Push to the branch**: `git push origin feature/amazing-feature`
+7. **Open a Pull Request** to the main QQQ repository
+
+### Code Standards
+
+- **Java**: Follow Java best practices and QQQ coding standards
+- **Documentation**: Update relevant documentation
+- **Versioning**: Follow semantic versioning
+- **Testing**: Maintain comprehensive test coverage
+
+## 🏢 About Kingsrook
+
+QQQ is built by **[Kingsrook](https://qrun.io)** - making engineers more productive through intelligent automation and developer tools.
+
+- **Website**: [https://qrun.io](https://qrun.io)
+- **Contact**: [contact@kingsrook.com](mailto:contact@kingsrook.com)
+- **GitHub**: [https://github.com/Kingsrook](https://github.com/Kingsrook)
+
+## 📄 License
+
+This project is licensed under the **GNU Affero General Public License v3.0** - see the [LICENSE.txt](LICENSE.txt) file for details.
+
+```
+QBit Standard Process Trace
+Copyright (C) 2021-2024 Kingsrook, LLC
+651 N Broad St Ste 205 # 6917 | Middletown DE 19709 | United States
+contact@kingsrook.com | https://github.com/Kingsrook/
+```
+
+**Note**: This is a component of the QQQ framework. For the complete license and more information, see the main QQQ repository: https://github.com/Kingsrook/qqq
+
+## 🆘 Support & Community
+
+### ⚠️ Important: Use Main QQQ Repository
+
+**All support, issues, discussions, and community interactions should go through the main QQQ repository:**
+
+- **Main Repository**: https://github.com/Kingsrook/qqq
+- **Issues**: https://github.com/Kingsrook/qqq/issues
+- **Discussions**: https://github.com/Kingsrook/qqq/discussions
+- **Wiki**: https://github.com/Kingsrook/qqq/wiki
+
+### Getting Help
+
+- **Documentation**: Check the [QQQ Wiki](https://github.com/Kingsrook/qqq/wiki)
+- **Issues**: Report bugs and feature requests on [Main QQQ Issues](https://github.com/Kingsrook/qqq/issues)
+- **Discussions**: Join community discussions on [Main QQQ Discussions](https://github.com/Kingsrook/qqq/discussions)
+- **Questions**: Ask questions in the main QQQ repository
+
+## 🙏 Acknowledgments
+
+- **QQQ Framework Team**: For the underlying low-code platform
+- **Process Monitoring Community**: For process tracing best practices
+- **Open Source Community**: For the tools and libraries that make this possible
+
+---
+
+**Built with ❤️ by the Kingsrook Team**
+
+**This is a QBit component of the QQQ framework. For complete information, support, and community, visit: https://github.com/Kingsrook/qqq**
 
